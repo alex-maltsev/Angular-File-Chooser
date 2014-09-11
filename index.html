@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>What flow</title>
+
+    <link href="css/style.css" rel="stylesheet">
+
+    <script src="lib/angular.min.js"></script>
+
+    <!-- Classes js -->
+    <script src="js/array_util.js"></script>
+
+    <script src="js/Resource.js"></script>
+    <script src="js/Collection.js"></script>
+
+    <script src="js/File.js"></script>
+    <script src="js/Folder.js"></script>
+
+    <!-- Angular-related js -->
+    <script src="js/fileSystem.js"></script>
+    <script src="js/whatController.js"></script>
+
+</head>
+<body ng-app="what" ng-controller="whatController as what">
+<div class="folders_div">
+    <h2>Folders</h2>
+    <div class="folder_item" ng-repeat="folder in what.folders"
+            ng-click="what.listFiles(folder)">
+      <span>{{folder.name}}</span>
+    </div>
+</div>
+<div class="files_div">
+    <h2>Files</h2>
+    <a class="sorter_link" ng-click="sorterVisible=true;">
+        <b>Sorting by:</b> {{curSort.name}}
+    </a><br>
+
+    <div class="file_item"
+         ng-repeat="file in what.files | orderBy:curSort.predicate"
+         ng-click="what.selectFile(file)">
+
+        <div class="checkmark" ng-if="file.selected">
+            <img src="img/checkmark.png">
+        </div>
+        <img class="file_icon" ng-if="file" src="{{file.iconSource()}}">
+        <p>{{file.name}}</p>
+    </div>
+</div>
+
+<div class="done_button"  ng-click="what.selectionDone()">
+    Done
+</div>
+
+<div class="cancel_button" ng-click="what.selectionCancel()">
+    Cancel
+</div>
+
+<div class="sorter_menu" ng-show="sorterVisible">
+    <ul>
+        <li class="sorter_item" ng-repeat="sorter in what.sortTypes"
+                ng-click="what.selectSortType(sorter)">
+            {{sorter.name}}
+        </li>
+    </ul>
+</div>
+</body>
+</html>
